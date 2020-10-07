@@ -19,8 +19,13 @@ public abstract class AbstractGamepad<T extends GamepadButton, U extends Gamepad
     //periodics to run
     private Periodic[] periodics;
 
-    public AbstractGamepad(Gamepad g){
+    public Class<T> buttonClass;
+    public Class<U> axisClass;
+
+    public AbstractGamepad(Gamepad g, Class<T> bClass, Class<U> aClass){
         gamepad = g;
+        buttonClass = bClass;
+        axisClass = aClass;
         try {
             setComponents(g);
         } catch (InstantiationException e) {
@@ -37,10 +42,6 @@ public abstract class AbstractGamepad<T extends GamepadButton, U extends Gamepad
     }
     //to actually instantiate the objects
     public void setComponents(Gamepad g) throws InstantiationException, IllegalAccessException {
-        //classes to instantiate
-        Class<T> buttonClass = (Class<T>) new GamepadButton().getClass();
-        Class<U> axisClass = (Class<U>) new GamepadAxis().getClass();
-
         //buttons
         a = (T) buttonClass.newInstance().setSupplier(() -> g.a);
         b = (T) buttonClass.newInstance().setSupplier(() -> g.b);
