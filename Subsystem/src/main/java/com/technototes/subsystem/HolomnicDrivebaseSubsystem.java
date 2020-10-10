@@ -24,13 +24,14 @@ public interface HolomnicDrivebaseSubsystem extends DrivebaseSubsystem {
 
         speed = Range.clip(speed + Math.abs(rotation), 0, 1);
 
-        double flPower = powerCompY - powerCompX - rotation;
-        double frPower = -powerCompY - powerCompX - rotation;
-        double rlPower = powerCompY + powerCompX - rotation;
-        double rrPower = -powerCompY + powerCompX - rotation;
+        double flPower = powerCompY - powerCompX - 2*rotation;
+        double frPower = -powerCompY - powerCompX - 2*rotation;
+        double rlPower = powerCompY + powerCompX - 2*rotation;
+        double rrPower = -powerCompY + powerCompX - 2*rotation;
 
         double scale = getScale(flPower, frPower, rlPower, rrPower);
         scale = scale == 0 ? 0 : speed/scale;
+        scale = Math.cbrt(scale);
         drive(flPower*scale, frPower*scale,rlPower*scale, rrPower*scale);
     }
 
